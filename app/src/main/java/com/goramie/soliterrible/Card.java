@@ -3,7 +3,7 @@ package com.goramie.soliterrible;
 public class Card {
     public static final int[] TYPES = {-2, -1, 1, 2};
 
-    private int type;
+    private int type; // Even red, odd black
     private int num;
     private boolean showing = false;
 
@@ -31,7 +31,8 @@ public class Card {
     public boolean isShowing() {
         return showing;
     }
-    public void show() {
-        showing = true;
+    public boolean toggleShow() {
+        showing = !showing;
+        return showing;
     }
 }

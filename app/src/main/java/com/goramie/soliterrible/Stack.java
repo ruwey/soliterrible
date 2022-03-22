@@ -17,7 +17,24 @@ public class Stack extends ArrayList<Card> {
                 super.add(new Card(type, i));
     }
 
-    public Card take() { // this should also be implemented to take all after a card
-        return super.remove(super.size()-1);
+    public Stack take() {
+        Stack single = new Stack();
+        single.add(super.remove(super.size()-1));
+        return single;
+    }
+    public Stack take(int idx) {
+        Stack moving = new Stack();
+        for (int i=idx; i < super.size(); i++) {
+            moving.add(super.remove(i));
+        }
+        return moving;
+    }
+
+    public Stack cardsShown() {
+        Stack shown = new Stack();
+        for (Card c: this) {
+            if (c.isShowing()) shown.add(c);
+        }
+        return shown;
     }
 }
