@@ -10,12 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Soliterrible">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainMenu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Board"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ALL_APPS" />
             </intent-filter>
         </activity>
     </application>
