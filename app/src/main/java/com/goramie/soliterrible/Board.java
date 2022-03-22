@@ -36,6 +36,21 @@ public class Board extends Activity {
             foundations[row] = new Stack();
     }
 
+    public boolean checkWin() {
+        for (Stack s: tableau) {
+            if (s.get(s.size() - 1).getNum() != 13)
+                return false;
+        }
+        return true;
+    }
+
+    public boolean checkAddFoundation(Card c, int row) {
+        Card last = tableau[row].get(tableau[row].size() - 1);
+        boolean sameType = (c.getType() == last.getType());
+        boolean ascending = (c.getNum() > last.getNum());
+        return sameType && ascending;
+    }
+
     public boolean checkAddRow(Card c, int row) {
         Card last = tableau[row].get(tableau[row].size() - 1);
         boolean opposite = ((c.getType() % 2) != (last.getType() % 2));
@@ -45,6 +60,7 @@ public class Board extends Activity {
 
     public void flipToDiscard() {
         if (deck.size() == 0) {
+            // no animation for reset deck, automatic
             Collections.reverse(discard);
             deck.addAll(discard);
         }
