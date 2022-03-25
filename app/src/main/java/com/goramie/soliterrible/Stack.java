@@ -30,16 +30,17 @@ public class Stack extends ArrayList<Card> {
                 this.add(new Card(c, type, i));
     }
 
-    public Stack take() {
-        Stack single = new Stack(c);
+    public ArrayList<Card> take() {
+        ArrayList<Card> single = new ArrayList<Card>();
         l.removeView(this.get(this.size() - 1).getView());
         single.add(super.remove(super.size() - 1));
         return single;
     }
 
-    public Stack take(int idx) {
-        Stack moving = new Stack(c);
+    public ArrayList<Card> take(int idx) {
+        ArrayList<Card> moving = new ArrayList<Card>();
         for (int i = idx; i < super.size(); i++) {
+            l.removeView(this.get(i).getView());
             moving.add(super.remove(i));
         }
         return moving;
@@ -61,7 +62,8 @@ public class Stack extends ArrayList<Card> {
 
     @Override
     public boolean addAll(@NonNull Collection<? extends Card> c) {
-        l.addView(c.ge);
+        for (Card i: c)
+            l.addView(i.getView());
         return super.addAll(c);
     }
 
