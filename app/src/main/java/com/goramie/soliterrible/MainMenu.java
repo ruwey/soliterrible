@@ -1,6 +1,7 @@
 package com.goramie.soliterrible;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +13,8 @@ public class MainMenu extends Activity {
     }
 
     public void onPress(View v) {
-        setContentView(R.layout.game);
+        System.out.println("Hello!");
+        Intent i = new Intent(this, Board.class);
+        startActivity(i);
     }
 }

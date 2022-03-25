@@ -1,5 +1,10 @@
 package com.goramie.soliterrible;
 
+import android.content.Context;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 public class Card {
     public static final int[] TYPES = {-2, -1, 1, 2};
 
@@ -7,9 +12,16 @@ public class Card {
     private int num;
     private boolean showing = false;
 
-    public Card(int type, int num) {
+    private ImageView view;
+
+    public Card(Context c, int type, int num) {
         this.type = type;
         this.num = num;
+
+        view = new ImageView(c);
+        view.setImageResource(R.drawable.ic_card);
+        view.setAdjustViewBounds(false);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 200));
     }
 
     public int getType() {
@@ -33,5 +45,8 @@ public class Card {
     }
     public void show() {
         showing = true;
+    }
+    public ImageView getView() {
+        return view;
     }
 }
