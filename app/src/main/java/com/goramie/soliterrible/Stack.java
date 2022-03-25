@@ -27,10 +27,28 @@ public class Stack extends ArrayList<Card> {
                 this.add(new Card(c, type, i));
     }
 
-    public Card take() { // this should also be implemented to take all after a card
+    public Stack take() {
+        Stack single = new Stack(c);
         l.removeView(this.get(this.size()-1).getView());
-        return super.remove(super.size()-1);
+        single.add(super.remove(super.size()-1));
+        return single;
     }
+    public Stack take(int idx) {
+        Stack moving = new Stack(c);
+        for (int i=idx; i < super.size(); i++) {
+            moving.add(super.remove(i));
+        }
+        return moving;
+    }
+
+    public Stack cardsShown() {
+        Stack shown = new Stack(c);
+        for (Card c : this) {
+            if (c.isShowing()) shown.add(c);
+        }
+        return shown;
+    }
+}
 
     @Override
     public boolean add(Card c) {
@@ -40,4 +58,3 @@ public class Stack extends ArrayList<Card> {
     public LinearLayout getLayout() {
         return l;
     }
-}
