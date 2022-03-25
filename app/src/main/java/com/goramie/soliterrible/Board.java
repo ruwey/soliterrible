@@ -34,9 +34,9 @@ public class Board extends Activity {
             tableau[row] = new Stack(this);
             System.out.println("Stack Created");
             for (int card = 0; card <= row; card++)
-                tableau[row].add(deck[0].take());
+                tableau[row].addAll(deck[0].take());
             System.out.println("Deck Taken");
-            tableau[row].get(tableau[row].size()-1).show();
+            tableau[row].get(tableau[row].size()-1).toggleShow();
         }
 
         // Setup Foundations
@@ -82,21 +82,21 @@ public class Board extends Activity {
     }
 
     public void flipToDiscard() {
-        if (deck.size() == 0) {
-            // no animation for reset deck, automatic
-            Collections.reverse(discard);
-            deck.addAll(discard);
+        if (deck[0].size() == 0) {
+            // no animation for reset deck[0], automatic
+            Collections.reverse(deck[1]);
+            deck[0].addAll(deck[1]);
         }
 
-        if (deck.size() > 2) {
-            discard.addAll(deck.take(deck.size() - 3));
+        if (deck[0].size() > 2) {
+            deck[1].addAll(deck[0].take(deck[0].size() - 3));
         } else  {
-            discard.addAll(deck);
+            deck[1].addAll(deck[0]);
         }
 
-        // we add to the end of the discard and remove from the beginning of the ones shown
-        while (discard.cardsShown().size() > shownInDiscard) {
-            discard.get(discard.indexOf(discard.cardsShown().get(0))).toggleShow();
+        // we add to the end of the deck[1] and remove from the beginning of the ones shown
+        while (deck[1].cardsShown().size() > shownInDiscard) {
+            deck[1].get(deck[1].indexOf(deck[1].cardsShown().get(0))).toggleShow();
         }
     }
 }
