@@ -20,7 +20,7 @@ public class Card {
 
         view = new ImageView(c);
         view.setImageResource(R.drawable.ic_card);
-        view.setAdjustViewBounds(false);
+        view.setAdjustViewBounds(true);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 200));
     }
 
