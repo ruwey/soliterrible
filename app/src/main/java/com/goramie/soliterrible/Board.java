@@ -23,15 +23,15 @@ public class Board extends Activity {
 
     private void setUp() {
         deck = new Stack[2];
-        for (int i = 0; i < deck.length; i++)
-            deck[i] = new Stack(this);
+        deck[0] = new Stack(this, 1);
         deck[0].dealFullDeck();
         Collections.shuffle(deck[0]);
+        deck[1] = new Stack(this, 3);
 
         // Setup Tableau
         tableau = new Stack[7];
         for (int row = 0; row < tableau.length; row++) {
-            tableau[row] = new Stack(this);
+            tableau[row] = new Stack(this, -1);
             System.out.println("Stack Created");
             for (int card = 0; card <= row; card++)
                 tableau[row].addAll(deck[0].take());
@@ -43,7 +43,7 @@ public class Board extends Activity {
         foundations = new Stack[4];
         for (int row = 0; row < foundations.length; row++) {
             System.out.println("Foundation Created");
-            foundations[row] = new Stack(this);
+            foundations[row] = new Stack(this, 1);
         }
     }
 

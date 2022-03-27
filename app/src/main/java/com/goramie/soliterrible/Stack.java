@@ -1,11 +1,12 @@
 package com.goramie.soliterrible;
 
 import android.content.Context;
-import android.graphics.Canvas;
+import android.graphics.Point;
+import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
@@ -17,11 +18,11 @@ public class Stack extends ArrayList<Card> {
     //private LinearLayout l;
     private StackLayout l;
 
-    public Stack(Context c) {
+    public Stack(Context c, int s) {
         super();
 
         this.c = c;
-        l = new StackLayout(this.c);
+        l = new StackLayout(this.c, s);
         //l.setOrientation(LinearLayout.VERTICAL);
     }
 
@@ -48,7 +49,7 @@ public class Stack extends ArrayList<Card> {
     }
 
     public Stack cardsShown() {
-        Stack shown = new Stack(c);
+        Stack shown = new Stack(c, -1);
         for (Card c : this) {
             if (c.isShowing()) shown.add(c);
         }
@@ -73,74 +74,87 @@ public class Stack extends ArrayList<Card> {
     }
 
     // Handles Most Drawing Stuff
-    public static class StackLayout extends ViewGroup {
-        private final boolean isVertical;
-        private final ImageView empty;
-
-        public StackLayout(Context context) {
+    public class StackLayout extends ViewGroup {
+        final int shown;
+        public StackLayout(Context context, int s) {
             super(context);
-
-            isVertical = true;
-            empty = new ImageView(context);
-            empty.setImageResource(R.drawable.ic_card);
-        }
-
-        @Override
-        public void addView(View child) {
-            super.addView(child);
-        }
-
-        @Override
-        protected void onDraw(Canvas c) {
-            System.out.println("tgest");
-            if (getChildCount() == 0) {
-                System.out.println("Drawing empty cell");
-                empty.getDrawable().draw(c);
-            }
+            shown = s;
         }
 
         @Override
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
-            final int children = getChildCount();
+            final int count = getChildCount();
+            int curWidth, curHeight, curLeft, curTop, maxHeight;
 
-            int curPos = 0;
+            //get the available size of child view
+            final int childLeft = this.getPaddingLeft();
+            final int childTop = this.getPaddingTop();
+            final int childRight = this.getMeasuredWidth() - this.getPaddingRight();
+            final int childBottom = this.getMeasuredHeight() - this.getPaddingBottom();
+            final int childWidth = childRight - childLeft;
+            final int childHeight = childBottom - childTop;
 
-            int width = getMeasuredWidth();
-            int height = getMeasuredHeight() - getPaddingBottom() - getPaddingTop();
+            maxHeight = 0;
+            curLeft = childLeft;
+            curTop = childTop;
 
-            System.out.println("width " + width + " height: " + height);
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
 
-            for (int c = 0; c < children; c++) {
-                final View child = getChildAt(c);
-                child.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-                System.out.println("Asigning Child " + child);
-                child.layout(l, t + curPos, l+ child.getWidth(), t + child.getHeight());
-                curPos += child.getHeight() * 0.3;
+                if (child.getVisibility() == GONE)
+                    return;
+
+                //Get the maximum size of the child
+                child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.AT_MOST));
+                curWidth = child.getMeasuredWidth();
+                curHeight = child.getMeasuredHeight();
+                //wrap is reach to the end
+                if (curLeft + curWidth >= childRight) {
+                    curLeft = childLeft;
+                    curTop += maxHeight;
+                    maxHeight = 0;
+                }
+                //do the layout
+                child.layout(curLeft, curTop, curLeft + curWidth, curTop + curHeight);
+                curTop += curHeight * 0.3;
             }
         }
 
         @Override
-        protected void onMeasure(int widthSpec, int heightSpec) {
-            final int children = getChildCount();
-
-            int width = 0;
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int count = getChildCount();
+            // Measurement will ultimately be computing these values.
             int height = 0;
+            int width = 0;
             int childState = 0;
 
-            for (int c = 0; c < children; c++) {
-                final View child = getChildAt(c);
-                if (child.getVisibility() != GONE) {
-                    measureChild(child, widthSpec, heightSpec );
 
-                    width = Math.max(width, child.getMeasuredWidth());
-                    height += child.getMeasuredHeight()*0.3;
-                    childState = combineMeasuredStates(childState, child.getMeasuredState());
-                }
+            // Iterate through all children, measuring them and computing our dimensions
+            // from their size.
+            for (int i = 0; i < count; i++) {
+                final View child = getChildAt(i);
+
+                if (child.getVisibility() == GONE)
+                    continue;
+
+                // Measure the child.
+                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+                width = child.getMeasuredWidth();
+                System.out.println("CW: " + width);
+
+                height += child.getMeasuredHeight() * 0.3;
+                if (i == 0)
+                    height += child.getMeasuredHeight()*0.7;
+                System.out.println("CH: " + height);
+                childState = combineMeasuredStates(childState, child.getMeasuredState());
             }
-            if (getChildAt(1) != null)
-                height += getChildAt(0).getMeasuredHeight() * 0.7;
 
-            setMeasuredDimension(resolveSizeAndState(width, widthSpec, childState), resolveSizeAndState(height, heightSpec, childState));
+            // Check against our minimum height and width
+//            maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+
+            // Report our final dimensions.
+            setMeasuredDimension(resolveSizeAndState(width, widthMeasureSpec, childState),
+                    resolveSizeAndState(height, heightMeasureSpec, childState << MEASURED_HEIGHT_STATE_SHIFT));
         }
     }
 }
