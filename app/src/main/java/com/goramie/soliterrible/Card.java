@@ -3,6 +3,7 @@ package com.goramie.soliterrible;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class Card extends AppCompatImageView {
     public static Map<Integer, String> TYPES;
+    public static Map<Integer, String> SUITS;
 
     private Paint textPaint;
 
@@ -24,6 +26,11 @@ public class Card extends AppCompatImageView {
         TYPES.put(-1, "♣️");
         TYPES.put(1, "♠️");
         TYPES.put(2, "♦️");
+
+        SUITS = new HashMap<>();
+        SUITS.put(11, "J");
+        SUITS.put(12, "Q");
+        SUITS.put(13, "K");
     }
 
     public Card(Context c, int type, int num) {
@@ -31,8 +38,10 @@ public class Card extends AppCompatImageView {
         super.setImageResource(R.drawable.ic_card);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setTextSize(30);
+        textPaint.setTextSize(45);
+        textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setColor(0xff101010);
+        textPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
         this.type = type;
         this.num = num;
@@ -45,8 +54,12 @@ public class Card extends AppCompatImageView {
 
         super.onDraw(canvas);
 
-        if (showing)
-            canvas.drawText(String.format("%s %s", TYPES.get(type), num), 30, 60, textPaint);
+        if (showing) {
+            String txt = String.format("%s %s", TYPES.get(type), num > 10 ? SUITS.get(num) : num);
+            int y = (int) (canvas.getHeight() / 2 + textPaint.getTextSize() / 4 + 0.5);
+            int x = (int) ((canvas.getWidth()) / 2 + 0.5);
+            canvas.drawText(txt, x, y, textPaint);
+        }
     }
 
     public int getType() {

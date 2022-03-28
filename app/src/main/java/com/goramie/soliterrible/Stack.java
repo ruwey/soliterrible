@@ -140,12 +140,12 @@ public class Stack extends ArrayList<Card> {
                 // Measure the child.
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
                 width = child.getMeasuredWidth();
-                System.out.println("CW: " + width);
+//                System.out.println("CW: " + width);
 
                 height += child.getMeasuredHeight() * 0.3;
                 if (i == 0)
                     height += child.getMeasuredHeight()*0.7;
-                System.out.println("CH: " + height);
+//                System.out.println("CH: " + height);
                 childState = combineMeasuredStates(childState, child.getMeasuredState());
             }
 
