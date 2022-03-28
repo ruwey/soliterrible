@@ -48,9 +48,8 @@ public class Stack extends ArrayList<Card> {
                 case DragEvent.ACTION_DRAG_STARTED:
                     final Stack moving = (Stack) dragEvent.getLocalState();
                     // THIS IS WHERE THE POSSIBLE MOVE LOGIC NEEDS TO GO. THE MOVING CARDS ARE
-                    // REFERED TO AS moving
+                    // REFERRED TO AS moving
                     return true;
-
                 case DragEvent.ACTION_DROP:
                     this.addAll((Stack) dragEvent.getLocalState());
                     return true;

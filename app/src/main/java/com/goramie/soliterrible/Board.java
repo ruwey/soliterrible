@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import androidx.annotation.RequiresApi;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Board extends Activity {
