@@ -7,34 +7,33 @@
 
     <LinearLayout
         android:id="@+id/tableau"
-        android:layout_width="393dp"
-        android:layout_height="540dp"
+        android:layout_width="382dp"
+        android:layout_height="488dp"
         android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/foundations"
+        android:layout_width="194dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/draw"
+        app:layout_constraintEnd_toEndOf="@+id/tableau"
+        app:layout_constraintTop_toTopOf="@+id/draw"></LinearLayout>
+
+    <LinearLayout
         android:id="@+id/draw"
-        android:layout_width="166dp"
-        android:layout_height="139dp"
+        android:layout_width="165dp"
+        android:layout_height="88dp"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/tableau"
         app:layout_constraintStart_toStartOf="@+id/tableau"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"></LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/foundations"
-        android:layout_width="189dp"
-        android:layout_height="142dp"
-        android:layout_marginStart="28dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/draw"
-        app:layout_constraintStart_toEndOf="@+id/draw"
-        app:layout_constraintTop_toTopOf="@+id/draw"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
