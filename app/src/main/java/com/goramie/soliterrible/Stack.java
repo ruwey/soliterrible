@@ -27,14 +27,14 @@ public class Stack extends ArrayList<Card> {
     }
 
     public void dealFullDeck() {
-        for (int type : Card.TYPES)
+        for (int type : Card.TYPES.keySet())
             for (int i = 0; i < 14; i++)
                 this.add(new Card(c, type, i));
     }
 
     public ArrayList<Card> take() {
         ArrayList<Card> single = new ArrayList<Card>();
-        l.removeView(this.get(this.size() - 1).getView());
+        l.removeView(this.get(this.size() - 1));
         single.add(super.remove(super.size() - 1));
         return single;
     }
@@ -42,7 +42,7 @@ public class Stack extends ArrayList<Card> {
     public ArrayList<Card> take(int idx) {
         ArrayList<Card> moving = new ArrayList<Card>();
         for (int i = idx; i < super.size(); i++) {
-            l.removeView(this.get(i).getView());
+            l.removeView(this.get(i));
             moving.add(super.remove(i));
         }
         return moving;
@@ -58,14 +58,14 @@ public class Stack extends ArrayList<Card> {
 
     @Override
     public boolean add(Card c) {
-        l.addView(c.getView());
+        l.addView(c);
         return super.add(c);
     }
 
     @Override
     public boolean addAll(@NonNull Collection<? extends Card> c) {
         for (Card i: c)
-            l.addView(i.getView());
+            l.addView(i);
         return super.addAll(c);
     }
 

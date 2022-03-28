@@ -3,18 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.5473958333333333" />
-        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.233" />
-        <entry key="app/src/main/res/drawable/ic_card.xml" value="0.233" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.233" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/board.xml" value="0.21351470947265627" />
-        <entry key="app/src/main/res/layout/game.xml" value="0.25" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.233" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.233" />
+        <entry key="..\:/Users/arami/Documents/git/soliterrible/app/src/main/res/drawable/ic_card.xml" value="0.212" />
+        <entry key="..\:/Users/arami/Documents/git/soliterrible/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1905" />
+        <entry key="..\:/Users/arami/Documents/git/soliterrible/app/src/main/res/drawable/ic_showing_card.xml" value="0.207" />
+        <entry key="..\:/Users/arami/Documents/git/soliterrible/app/src/main/res/layout/activity_main.xml" value="0.5" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

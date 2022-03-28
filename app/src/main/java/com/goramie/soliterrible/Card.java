@@ -1,27 +1,52 @@
 package com.goramie.soliterrible;
 
 import android.content.Context;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
-public class Card {
-    public static final int[] TYPES = {-2, -1, 1, 2};
+import androidx.appcompat.widget.AppCompatImageView;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Card extends AppCompatImageView {
+    public static Map<Integer, String> TYPES;
+
+    private Paint textPaint;
 
     private int type; // Even red, odd black
     private int num;
     private boolean showing = false;
 
-    private ImageView view;
+    static {
+        TYPES = new HashMap<>();
+        TYPES.put(-2, "♥️");
+        TYPES.put(-1, "♣️");
+        TYPES.put(1, "♠️");
+        TYPES.put(2, "♦️");
+    }
 
     public Card(Context c, int type, int num) {
+        super(c);
+        super.setImageResource(R.drawable.ic_card);
+
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setTextSize(30);
+        textPaint.setColor(0xff101010);
+
         this.type = type;
         this.num = num;
+    }
 
-        view = new ImageView(c);
-        view.setImageResource(R.drawable.ic_card);
-        view.setAdjustViewBounds(true);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 200));
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (showing)
+            super.setImageResource(R.drawable.ic_showing_card);
+
+        super.onDraw(canvas);
+
+        if (showing)
+            canvas.drawText(String.format("%s %s", TYPES.get(type), num), 30, 60, textPaint);
     }
 
     public int getType() {
@@ -46,8 +71,5 @@ public class Card {
     public boolean toggleShow() {
         showing = !showing;
         return showing;
-    }
-    public ImageView getView() {
-        return view;
     }
 }
