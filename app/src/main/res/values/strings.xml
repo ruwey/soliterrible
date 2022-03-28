@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Soliterrible</string>
     <string name="textview">Soliterrible</string>
+    <string name="start">start</string>
 </resources>

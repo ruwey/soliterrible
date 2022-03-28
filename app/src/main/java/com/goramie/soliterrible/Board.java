@@ -60,7 +60,7 @@ public class Board extends Activity {
     }
 
     public boolean checkWin() {
-        for (Stack s: tableau) {
+        for (Stack s: foundations) {
             if (s.get(s.size() - 1).getNum() != 13)
                 return false;
         }
@@ -68,7 +68,7 @@ public class Board extends Activity {
     }
 
     public boolean checkAddFoundation(Card c, int row) {
-        Card last = tableau[row].get(tableau[row].size() - 1);
+        Card last = foundations[row].get(foundations[row].size() - 1);
         boolean sameType = (c.getType() == last.getType());
         boolean ascending = (c.getNum() > last.getNum());
         return sameType && ascending;
