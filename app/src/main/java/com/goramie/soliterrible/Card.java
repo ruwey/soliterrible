@@ -3,8 +3,13 @@ package com.goramie.soliterrible;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
+import android.view.DragEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.graphics.Typeface;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import java.util.HashMap;
@@ -19,6 +24,7 @@ public class Card extends AppCompatImageView {
     private int type; // Even red, odd black
     private int num;
     private boolean showing = false;
+    Stack parent;
 
     static {
         TYPES = new HashMap<>();
@@ -33,9 +39,15 @@ public class Card extends AppCompatImageView {
         SUITS.put(13, "K");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Card(Context c, int type, int num) {
         super(c);
         super.setImageResource(R.drawable.ic_card);
+        super.setOnDragListener((view, dragEvent) -> {
+            System.out.println("hello");
+
+            return true;
+        });
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(45);
@@ -84,5 +96,8 @@ public class Card extends AppCompatImageView {
     public boolean toggleShow() {
         showing = !showing;
         return showing;
+    }
+    public void setParent(Stack s) {
+        parent = s;
     }
 }
