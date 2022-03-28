@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Build;
-import android.view.DragEvent;
-import android.view.MotionEvent;
-import android.view.View;
 import android.graphics.Typeface;
 
 import androidx.annotation.RequiresApi;

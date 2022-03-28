@@ -3,8 +3,6 @@ package com.goramie.soliterrible;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-
-import java.lang.reflect.Array;
 import java.util.Collections;
 
 public class Board extends Activity {

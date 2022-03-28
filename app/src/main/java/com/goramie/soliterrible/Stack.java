@@ -1,14 +1,10 @@
 package com.goramie.soliterrible;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Build;
-import android.util.AttributeSet;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -56,14 +52,14 @@ public class Stack extends ArrayList<Card> {
     }
 
     public ArrayList<Card> take() {
-        ArrayList<Card> single = new ArrayList<Card>();
+        ArrayList<Card> single = new ArrayList<>();
         l.removeView(this.get(this.size() - 1));
         single.add(super.remove(super.size() - 1));
         return single;
     }
 
     public ArrayList<Card> take(int idx) {
-        ArrayList<Card> moving = new ArrayList<Card>();
+        ArrayList<Card> moving = new ArrayList<>();
         for (int i = idx; i < super.size(); i++) {
             l.removeView(this.get(i));
             moving.add(super.remove(i));

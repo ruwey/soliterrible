@@ -12,8 +12,7 @@ public class MainMenu extends Activity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onPress(View v) {
-        System.out.println("Hello!");
+    public void onStart(View v) {
         Intent i = new Intent(this, Board.class);
         startActivity(i);
     }
