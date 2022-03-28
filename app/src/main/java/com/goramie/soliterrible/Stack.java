@@ -71,6 +71,7 @@ public class Stack extends ArrayList<Card> {
         return moving;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Stack cardsShown() {
         Stack shown = new Stack(c, -1);
         for (Card c : this) {
