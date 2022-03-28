@@ -40,11 +40,6 @@ public class Card extends AppCompatImageView {
     public Card(Context c, int type, int num) {
         super(c);
         super.setImageResource(R.drawable.ic_card);
-        super.setOnDragListener((view, dragEvent) -> {
-            System.out.println("hello");
-
-            return true;
-        });
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(45);

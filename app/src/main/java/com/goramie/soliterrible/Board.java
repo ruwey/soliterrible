@@ -1,8 +1,11 @@
 package com.goramie.soliterrible;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import androidx.annotation.RequiresApi;
+import java.lang.reflect.Array;
 import java.util.Collections;
 
 public class Board extends Activity {
@@ -11,6 +14,7 @@ public class Board extends Activity {
     private Stack[] deck;
     private int shownInDiscard = 3;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
@@ -19,6 +23,7 @@ public class Board extends Activity {
         bind();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setUp() {
         deck = new Stack[2];
         deck[0] = new Stack(this, 1);
@@ -79,6 +84,7 @@ public class Board extends Activity {
         return opposite && descending;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void flipToDiscard() {
         if (deck[0].size() == 0) {
             // no animation for reset deck[0], automatic

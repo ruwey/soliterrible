@@ -1,7 +1,11 @@
 package com.goramie.soliterrible;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.view.Display;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +32,31 @@ public class Stack extends ArrayList<Card> {
             l = new StackLayout(this.c);
         else
             l = new FrameLayout(this.c);
-        l.setOnTouchListener((View v, MotionEvent m) -> {
-            if (m.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                System.out.println("(" + m.getX() + ", " + m.getY() + ")");
-                Stack temp = new Stack(c, -1);
-                int pos = Math.min(this.size(),
-                        (int)(m.getY()/(l.getChildAt(0).getMeasuredHeight()*.3)));
-                temp.addAll(this.take(pos));
-                this.get(pos).startDragAndDrop(null, new View.DragShadowBuilder(temp.getLayout()), null, 0);
-            }
-//            Stack temp = new Stack(c, -1);
-//            temp.addAll(parent.take(parent.indexOf(v)));
+        l.setOnLongClickListener((View v) -> {
+            Stack temp = new Stack(c, -1);
+            int pos = Math.min(this.size()-1,
+                    (int)(v.getY()/(l.getChildAt(0).getMeasuredHeight()*.3)));
+            temp.addAll(this.take(pos));
+            temp.getLayout().startDragAndDrop(null, new View.DragShadowBuilder(temp.getLayout()), temp, 0);
             return true;
+        });
+
+        l.setOnDragListener((view, dragEvent) -> {
+            System.out.println("hello");
+
+            switch (dragEvent.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    final Stack moving = (Stack) dragEvent.getLocalState();
+                    // THIS IS WHERE THE POSSIBLE MOVE LOGIC NEEDS TO GO. THE MOVING CARDS ARE
+                    // REFERED TO AS moving
+                    return true;
+
+                case DragEvent.ACTION_DROP:
+                    this.addAll((Stack) dragEvent.getLocalState());
+                    return true;
+            }
+
+            return false;
         });
         //l.setOrientation(LinearLayout.VERTICAL);
     }
