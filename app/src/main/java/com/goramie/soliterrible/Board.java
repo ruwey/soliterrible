@@ -1,12 +1,11 @@
 package com.goramie.soliterrible;
 
 import android.app.Activity;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
-import androidx.annotation.RequiresApi;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+
 import java.util.Collections;
 
 public class Board extends Activity {
@@ -15,7 +14,6 @@ public class Board extends Activity {
     private Stack[] deck;
     private int shownInDiscard = 3;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
@@ -24,18 +22,17 @@ public class Board extends Activity {
         bind();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setUp() {
         deck = new Stack[2];
-        deck[0] = new Stack(this, 1);
+        deck[0] = new Stack(this, 1, Stack.Type.DRAW, this);
         deck[0].dealFullDeck();
         Collections.shuffle(deck[0]);
-        deck[1] = new Stack(this, 3);
+        deck[1] = new Stack(this, 3, Stack.Type.DISCARD, this);
 
         // Setup Tableau
         tableau = new Stack[7];
         for (int row = 0; row < tableau.length; row++) {
-            tableau[row] = new Stack(this, -1);
+            tableau[row] = new Stack(this, -1, Stack.Type.TABLEAU, this);
             System.out.println("Stack Created");
             for (int card = 0; card <= row; card++)
                 tableau[row].addAll(deck[0].take());
@@ -47,7 +44,7 @@ public class Board extends Activity {
         foundations = new Stack[4];
         for (int row = 0; row < foundations.length; row++) {
             System.out.println("Foundation Created");
-            foundations[row] = new Stack(this, 1);
+            foundations[row] = new Stack(this, 1, Stack.Type.FOUNDATION, this);
         }
     }
 
@@ -71,37 +68,21 @@ public class Board extends Activity {
         return true;
     }
 
-    public boolean checkAddFoundation(Card c, int row) {
-        Card last = foundations[row].get(foundations[row].size() - 1);
-        boolean sameType = (c.getType() == last.getType());
-        boolean ascending = (c.getNum() > last.getNum());
-        return sameType && ascending;
-    }
-
-    public boolean checkAddRow(Card c, int row) {
-        Card last = tableau[row].get(tableau[row].size() - 1);
-        boolean opposite = ((c.getType() % 2) != (last.getType() % 2));
-        boolean descending = (c.getNum() < last.getNum());
-        return opposite && descending;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void flipToDiscard() {
         if (deck[0].size() == 0) {
             // no animation for reset deck[0], automatic
+            System.out.println("reset");
             Collections.reverse(deck[1]);
-            deck[0].addAll(deck[1]);
+            deck[0].addAll(deck[1].take(0));
+            for (Card c: deck[0])
+                c.toggleShow();
+        } else {
+            deck[1].addAll(deck[0].take());
+            deck[1].get(deck[1].size() - 1).toggleShow();
         }
+    }
 
-        if (deck[0].size() > 2) {
-            deck[1].addAll(deck[0].take(deck[0].size() - 3));
-        } else  {
-            deck[1].addAll(deck[0]);
-        }
-
-        // we add to the end of the deck[1] and remove from the beginning of the ones shown
-        while (deck[1].cardsShown().size() > shownInDiscard) {
-            deck[1].get(deck[1].indexOf(deck[1].cardsShown().get(0))).toggleShow();
-        }
+    public void restartGame(View v) {
+        startActivity(new Intent(this, MainMenu.class));
     }
 }

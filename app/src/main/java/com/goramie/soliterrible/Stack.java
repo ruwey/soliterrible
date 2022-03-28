@@ -1,69 +1,99 @@
 package com.goramie.soliterrible;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.view.Display;
+import android.content.Intent;
 import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class Stack extends ArrayList<Card> {
     private Context c;
-    //private LinearLayout l;
     private ViewGroup l;
+    private final Board board;
+    public enum Type {
+        TABLEAU,
+        FOUNDATION,
+        DRAW,
+        DISCARD
+    }
+    private Type type;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Stack(Context c, int s) {
+    public Stack(Context c, int s, Type type, Board board) {
         super();
 
         this.c = c;
-
         if (s == -1)
             l = new StackLayout(this.c);
-        else
+        else {
             l = new FrameLayout(this.c);
-        l.setOnLongClickListener((View v) -> {
-            Stack temp = new Stack(c, -1);
-            int pos = Math.min(this.size()-1,
-                    (int)(v.getY()/(l.getChildAt(0).getMeasuredHeight()*.3)));
-            temp.addAll(this.take(pos));
-            temp.getLayout().startDragAndDrop(null, new View.DragShadowBuilder(temp.getLayout()), temp, 0);
-            return true;
+            l.setLayoutParams(new FrameLayout.LayoutParams(130, ViewGroup.LayoutParams.FILL_PARENT));
+        }
+        this.type = type;
+        this.board = board;
+        l.setOnClickListener((View v) -> {
+            if (type.equals(Type.DRAW))
+                board.flipToDiscard();
         });
 
         l.setOnDragListener((view, dragEvent) -> {
-            System.out.println("hello");
 
+            Card moving = (Card) dragEvent.getLocalState();
             switch (dragEvent.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
-                    final Stack moving = (Stack) dragEvent.getLocalState();
-                    // THIS IS WHERE THE POSSIBLE MOVE LOGIC NEEDS TO GO. THE MOVING CARDS ARE
-                    // REFERRED TO AS moving
-                    return true;
+                    return checkAdd(moving);
+
                 case DragEvent.ACTION_DROP:
-                    this.addAll((Stack) dragEvent.getLocalState());
+                    if (moving.getStack().indexOf(moving) != 0 &&
+                            moving.getStack().getType().equals(Type.TABLEAU) &&
+                            !moving.getStack().get(moving.getStack().indexOf(moving)-1).isShowing())
+                        moving.getStack().get(moving.getStack().indexOf(moving)-1).toggleShow();
+                    this.addAll(moving.getStack().take(moving.getStack().indexOf(moving)));
                     return true;
             }
 
             return false;
         });
-        //l.setOrientation(LinearLayout.VERTICAL);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    public boolean checkAdd(Card c) {
+        switch (type) {
+            case FOUNDATION:
+                return checkAddFoundation(c);
+            case TABLEAU:
+                return checkAddTableau(c);
+            default:
+                return false;
+        }
+    }
+
+    public boolean checkAddFoundation(Card c) {
+        if (this.size() < 1)
+            return c.getNum() == 1;
+        Card last = this.get(this.size() - 1);
+        boolean sameType = (c.getType() == last.getType());
+        boolean ascending = (c.getNum() > last.getNum());
+        return sameType && ascending;
+    }
+
+    public boolean checkAddTableau(Card c) {
+        if (this.size() < 1)
+            return c.getNum() == 13;
+        Card last = this.get(this.size() - 1);
+        boolean opposite = ((c.getType() % 2) != (last.getType() % 2));
+        boolean descending = (c.getNum() == last.getNum()-1);
+        return opposite && descending;
+    }
+
+
     public void dealFullDeck() {
         for (int type : Card.TYPES.keySet())
-            for (int i = 0; i < 14; i++)
+            for (int i = 1; i < 14; i++)
                 this.add(new Card(c, type, i));
     }
 
@@ -79,13 +109,13 @@ public class Stack extends ArrayList<Card> {
         for (int i = idx; i < super.size(); i++) {
             l.removeView(this.get(i));
             moving.add(super.remove(i));
+            i--;
         }
         return moving;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public Stack cardsShown() {
-        Stack shown = new Stack(c, -1);
+        Stack shown = new Stack(c, -1, Type.DRAW, board);
         for (Card c : this) {
             if (c.isShowing()) shown.add(c);
         }
@@ -101,8 +131,10 @@ public class Stack extends ArrayList<Card> {
 
     @Override
     public boolean addAll(@NonNull Collection<? extends Card> c) {
-        for (Card i: c)
+        for (Card i: c) {
+            i.setParent(this);
             l.addView(i);
+        }
         return super.addAll(c);
     }
 
@@ -110,10 +142,16 @@ public class Stack extends ArrayList<Card> {
         return l;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     // Handles Most Drawing Stuff
     public class StackLayout extends ViewGroup {
+        LayoutParams lp = new LayoutParams(130, LayoutParams.FILL_PARENT);
         public StackLayout(Context context) {
             super(context);
+            this.setLayoutParams(lp);
         }
 
         @Override

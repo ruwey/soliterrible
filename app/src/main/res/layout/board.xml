@@ -18,17 +18,19 @@
 
     <LinearLayout
         android:id="@+id/foundations"
-        android:layout_width="194dp"
-        android:layout_height="0dp"
+        android:layout_width="212dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="16dp"
+        android:gravity="left"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/draw"
-        app:layout_constraintEnd_toEndOf="@+id/tableau"
+        app:layout_constraintStart_toEndOf="@+id/draw"
         app:layout_constraintTop_toTopOf="@+id/draw"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/draw"
-        android:layout_width="165dp"
-        android:layout_height="88dp"
+        android:layout_width="139dp"
+        android:layout_height="86dp"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/tableau"
@@ -42,9 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Restart"
-        android:onClick="onStart"
         android:backgroundTint="#fee"
+        android:onClick="restartGame"
+        android:text="Restart"
+        android:textColor="#020202"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
