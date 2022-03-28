@@ -161,12 +161,17 @@ public class Stack extends ArrayList<Card> {
                 // Measure the child.
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
                 width = child.getMeasuredWidth();
+//                System.out.println("CW: " + width);
 
                 height += child.getMeasuredHeight() * 0.3;
-                if (i == count-1)
+                if (i == 0)
                     height += child.getMeasuredHeight()*0.7;
+//                System.out.println("CH: " + height);
                 childState = combineMeasuredStates(childState, child.getMeasuredState());
             }
+
+            // Check against our minimum height and width
+//            maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
 
             // Report our final dimensions.
             setMeasuredDimension(resolveSizeAndState(width, widthMeasureSpec, childState),
