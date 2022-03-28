@@ -77,7 +77,7 @@ public class Stack extends ArrayList<Card> {
             return c.getNum() == 1;
         Card last = this.get(this.size() - 1);
         boolean sameType = (c.getType() == last.getType());
-        boolean ascending = (c.getNum() > last.getNum());
+        boolean ascending = (c.getNum() == last.getNum()+1);
         return sameType && ascending;
     }
 
