@@ -50,7 +50,7 @@ public class Card extends AppCompatImageView {
         super.setImageResource(R.drawable.ic_card);
         super.setOnTouchListener((View v, MotionEvent m) -> {
             if (m.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                if (this.parent.getType().equals(Stack.Type.DRAW))
+                if (this.parent.getType().equals(Stack.Type.DRAW) || !this.isShowing())
                     return false;
                 this.startDragAndDrop(null, new DragShadowBuilder(this),
                         this, 0);
